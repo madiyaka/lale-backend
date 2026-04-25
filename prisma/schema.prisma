@@ -1,16 +1,11 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
   output   = "../src/generated/prisma"
-  moduleFormat = "cjs"
 }
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 enum Role {
@@ -35,7 +30,6 @@ model WaterBody {
   district          String?
   locationDesc      String?   @map("location_desc")
 
-
   latitude          Float?
   longitude         Float?
   boundaries        Json?
@@ -43,7 +37,7 @@ model WaterBody {
   cadastaralNumber  String? @map("cadastral_number")
 
   passport          WaterBodyPassport?
-  measurements     BioindicationRecord[]
+  measurements      BiondicationRecord[]
 
   @@map("water_bodies")
 }
@@ -52,7 +46,6 @@ model WaterBodyPassport {
   id                      String    @id @default(uuid())
   waterBodyId             String    @unique @map("water_body_id")
   waterBody               WaterBody @relation(fields: [waterBodyId], references: [id], onDelete: Cascade)
-
 
   area                    Float?    @map("area_ha")
   overgrowthArea          Float?    @map("overgrowth_area_ha")
@@ -67,13 +60,11 @@ model WaterBodyPassport {
   avgDepth                Float?    @map("avg_depth_m")
   volume                  Float?    @map("volume_min_m3")
 
-
   fisheryType             String?   @map("fishery_type")
   fishProductivity        Float?    @map("fish-productivity")
   economicDesc            String?   @db.Text @map("economic_desc")
   waterProtectionZone     String?   @map("water_protection_zone")
   waterProtectionStrip    String?   @map("water_protection_strip")
-
 
   ichthyofauna            String?   @db.Text
   mammals                 String?   @db.Text
@@ -82,20 +73,18 @@ model WaterBodyPassport {
   @@map("water_body_passports")
 }
 
-model BioindicationRecord {
+model BiondicationRecord {
   id                  String  @id @default(uuid())
   waterBodyId         String  @map("water_body_id")
   WaterBody           WaterBody @relation(fields: [waterBodyId], references: [id], onDelete: Cascade)
 
   recordDate          DateTime @default(now()) @map("record_date")
 
-
   ph                  Float?
   turbidity           Float?
   dissolvedGases      String? @map("dissolved_gases")
   biogenicCompounds   String? @map("biogenic_compounds")
   permanganateOxid    Float?  @map("permanganate_oxid")
-
 
   mineralization      Float?
   salinity            Float?
@@ -107,10 +96,8 @@ model BioindicationRecord {
   hydrocarbonates     Float?
   potassiumSodium     Float?  @map("potassium_sodium")
 
-
   overgrowthPercent   Float?  @map("overgrowth_percent")
   overgrowthDegree    String? @map("overgrowth_degree")
-
 
   phytoplanktonDev    String? @map("phytoplankton_dev")
   zooplanktonTaxa     String? @db.Text @map("zooplankton_taxa")
