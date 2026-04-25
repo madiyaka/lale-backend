@@ -47,4 +47,23 @@ export class CreateWaterBodyDto {
   passport?: PassportDto;
 }
 
-export class UpdateWaterBodyDto extends PartialType(CreateWaterBodyDto) {}
+export class UpdateWaterBodyDto {
+  @IsOptional()
+  @IsString()
+  name?: string;
+
+  @IsOptional() @IsString() district?: string;
+  @IsOptional() @IsString() locationDesc?: string;
+
+  @IsOptional() @IsNumber() latitude?: number;
+  @IsOptional() @IsNumber() longitude?: number;
+
+  @IsOptional() @IsObject() boundaries?: any;
+
+  @IsOptional() @IsString() cadastralNumber?: string;
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => PassportDto)
+  passport?: PassportDto;
+}
