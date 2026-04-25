@@ -82,7 +82,7 @@ export class WaterBodiesService {
     if (!waterBody) {
       throw new NotFoundException(`Водоем ID ${waterBodyId} не найден`);
     }
-    return this.prisma.bioindicationRecord.create({
+    return this.prisma.biondicationRecord.create({
       data: {
         ...data,
         waterBodyId,
@@ -91,7 +91,7 @@ export class WaterBodiesService {
   }
 
   async getMeasurements(waterBodyId: string) {
-    return this.prisma.bioindicationRecord.findMany({
+    return this.prisma.biondicationRecord.findMany({
       where: { waterBodyId },
       orderBy: { recordDate: 'desc' },
     });
@@ -102,7 +102,7 @@ export class WaterBodiesService {
     measurementId: string,
     data: CreateMeasurementDto,
   ) {
-    const measurement = await this.prisma.bioindicationRecord.findFirst({
+    const measurement = await this.prisma.biondicationRecord.findFirst({
       where: {
         id: measurementId,
         waterBodyId,
@@ -111,14 +111,14 @@ export class WaterBodiesService {
     if (!measurement) {
       throw new NotFoundException(`Замер ID ${measurementId} не найден`);
     }
-    return this.prisma.bioindicationRecord.update({
+    return this.prisma.biondicationRecord.update({
       where: { id: measurementId },
       data,
     });
   }
 
   async removeMeasurement(waterBodyId: string, measurementId: string) {
-    const measurement = await this.prisma.bioindicationRecord.findFirst({
+    const measurement = await this.prisma.biondicationRecord.findFirst({
       where: {
         id: measurementId,
         waterBodyId,
@@ -127,7 +127,7 @@ export class WaterBodiesService {
     if (!measurement) {
       throw new NotFoundException(`Замер ID ${measurementId} не найден`);
     }
-    return this.prisma.bioindicationRecord.delete({
+    return this.prisma.biondicationRecord.delete({
       where: { id: measurementId },
     });
   }
